@@ -62,14 +62,16 @@ app.post('/api/create-job', (req, res) => {
   });
 
   proc.on('close', (code) => {
-    if (code === 0 && fs.existsSync(outputPath)) {
-      jobs[jobId].status = 'done';
-    } else {
-      jobs[jobId].status = 'error';
-      jobs[jobId].error = `yt-dlp exited with code ${code}: ${stderr}`;
-      if (fs.existsSync(outputPath)) fs.unlinkSync(outputPath);
-    }
-  });
+  const hasFile = fs.existsSync(outputPath);
+
+  if (hasFile) {
+    // Even if yt-dlp returned a non-zero code, we trust the file
+    jobs[jobId].status = 'done';
+  } else {
+    jobs[jobId].status = 'error';
+    jobs[jobId].error = `yt-dlp exited with code ${code}: ${stderr}`;
+  }
+});
 
   res.json({ jobId });
 });
