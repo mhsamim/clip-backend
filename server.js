@@ -44,6 +44,7 @@ app.post('/api/create-job', (req, res) => {
 
   const sectionArg = `*${start}-${end}`;
   const args = [
+    '--extractor-args', 'youtube:player_client=default',
     '-f', 'bv*+ba/best',
     '--download-sections', sectionArg,
     '--force-keyframes-at-cuts',
