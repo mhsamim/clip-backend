@@ -1,10 +1,14 @@
-FROM node:22-bookworm
+FROM node:22-bullseye
 
-# Install system deps: ffmpeg + python + yt-dlp
+# Install system deps: ffmpeg + curl
 RUN apt-get update && \
-    apt-get install -y ffmpeg python3 python3-pip && \
-    pip3 install yt-dlp && \
+    apt-get install -y ffmpeg curl && \
     rm -rf /var/lib/apt/lists/*
+
+# Install yt-dlp standalone binary (no Python/pip needed)
+RUN curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp \
+    -o /usr/local/bin/yt-dlp && \
+    chmod a+rx /usr/local/bin/yt-dlp
 
 WORKDIR /app
 
