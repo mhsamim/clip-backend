@@ -1,4 +1,4 @@
-FROM node:22-bullseye
+FROM node:22-bookworm
 
 # Install system deps: ffmpeg + python + yt-dlp
 RUN apt-get update && \
